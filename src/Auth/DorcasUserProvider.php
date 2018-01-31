@@ -5,7 +5,6 @@ namespace Hostville\Dorcas\LaravelCompat\Auth;
 
 use Hostville\Dorcas\DorcasResponse;
 use Hostville\Dorcas\Sdk;
-use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Facades\Cache;
@@ -51,11 +50,11 @@ class DorcasUserProvider implements UserProvider
     public function retrieveById($identifier)
     {
         $resource = $this->sdk->createUserResource($identifier);
-        $response = $resource->send('get');
+        $response = $resource->relationships('company')->send('get');
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new GenericUser($response->getData());
+        return new DorcasUser($this->sdk, $response->getData());
     }
 
     /**
@@ -69,13 +68,14 @@ class DorcasUserProvider implements UserProvider
     public function retrieveByToken($identifier, $token)
     {
         $resource = $this->sdk->createUserResource($identifier);
-        $response = $resource->addQueryArgument('column', 'remember_token')
+        $response = $resource->relationships('company')
+                                ->addQueryArgument('column', 'remember_token')
                                 ->addQueryArgument('value', $token)
                                 ->send('get');
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new GenericUser($response->getData());
+        return new DorcasUser($this->sdk, $response->getData());
     }
 
     /**
@@ -110,11 +110,11 @@ class DorcasUserProvider implements UserProvider
         $this->sdk->setAuthorizationToken($token);
         # set the authorization token
         $service = $this->sdk->createProfileService();
-        $response = $service->send('get');
+        $response = $service->addQueryArgument('include', 'company')->send('get');
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new GenericUser($response->getData());
+        return new DorcasUser($this->sdk, $response->getData());
     }
 
     /**
