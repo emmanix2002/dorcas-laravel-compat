@@ -45,6 +45,6 @@ class DorcasUser extends GenericUser
             }
             $this->attributes = $response->getData();
         }
-        return $this->attributes['company'] ?? [];
+        return $this->attributes['company']['data'] ?? [];
     }
 }
