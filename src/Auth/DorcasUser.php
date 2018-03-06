@@ -31,10 +31,11 @@ class DorcasUser extends GenericUser
      * Returns the company information, if available.
      *
      * @param bool $requestIfNotAvailable request the information from the API if it's not available
+     * @param bool $asObject
      *
-     * @return array
+     * @return array|null|object
      */
-    public function company(bool $requestIfNotAvailable = true): array
+    public function company(bool $requestIfNotAvailable = true, bool $asObject = false)
     {
         if (!array_key_exists('company', $this->attributes) && $requestIfNotAvailable) {
             $service = $this->sdk->createProfileService();
@@ -45,6 +46,7 @@ class DorcasUser extends GenericUser
             }
             $this->attributes = $response->getData();
         }
-        return $this->attributes['company']['data'] ?? [];
+        $user = $this->attributes['company']['data'] ?? [];
+        return $asObject ? (object) $user : $user;
     }
 }
