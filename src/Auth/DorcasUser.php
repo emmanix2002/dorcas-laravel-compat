@@ -116,7 +116,7 @@ class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable, Qu
      */
     public function getQueueableId()
     {
-        return $this->attributes['id'];
+        return $this->attributes;
     }
 
     /**
@@ -126,6 +126,6 @@ class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable, Qu
      */
     public function getQueueableConnection()
     {
-        return 'dorcas';
+        return null;
     }
 }
