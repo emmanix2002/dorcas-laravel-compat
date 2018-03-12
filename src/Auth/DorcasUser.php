@@ -5,12 +5,11 @@ namespace Hostville\Dorcas\LaravelCompat\Auth;
 
 use Hostville\Dorcas\Sdk;
 use Illuminate\Auth\GenericUser;
-use Illuminate\Contracts\Queue\QueueableEntity;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Notifications\Notifiable;
 
-class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable, QueueableEntity
+class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable
 {
     use Notifiable;
 
@@ -107,25 +106,5 @@ class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable, Qu
     public function jsonSerialize()
     {
         return $this->toArray();
-    }
-
-    /**
-     * Get the queueable identity for the entity.
-     *
-     * @return mixed
-     */
-    public function getQueueableId()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Get the connection of the entity.
-     *
-     * @return string|null
-     */
-    public function getQueueableConnection()
-    {
-        return null;
     }
 }
