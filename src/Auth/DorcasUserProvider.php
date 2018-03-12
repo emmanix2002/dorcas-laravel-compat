@@ -54,7 +54,7 @@ class DorcasUserProvider implements UserProvider
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new DorcasUser($this->sdk, $response->getData());
+        return new DorcasUser($response->getData(), $this->sdk);
     }
 
     /**
@@ -75,7 +75,7 @@ class DorcasUserProvider implements UserProvider
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new DorcasUser($this->sdk, $response->getData());
+        return new DorcasUser($response->getData(), $this->sdk);
     }
 
     /**
@@ -114,7 +114,7 @@ class DorcasUserProvider implements UserProvider
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new DorcasUser($this->sdk, $response->getData());
+        return new DorcasUser($response->getData(), $this->sdk);
     }
 
     /**
