@@ -5,9 +5,12 @@ namespace Hostville\Dorcas\LaravelCompat\Auth;
 
 use Hostville\Dorcas\Sdk;
 use Illuminate\Auth\GenericUser;
+use Illuminate\Notifications\Notifiable;
 
 class DorcasUser extends GenericUser
 {
+    use Notifiable;
+
     /** @var Sdk  */
     private $sdk;
 
@@ -48,5 +51,13 @@ class DorcasUser extends GenericUser
         }
         $user = $this->attributes['company']['data'] ?? [];
         return $asObject ? (object) $user : $user;
+    }
+
+    /**
+     * @return string
+     */
+    public function routeNotificationForSms()
+    {
+        return (string) $this->attributes['phone'] ?? '';
     }
 }
