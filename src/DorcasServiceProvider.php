@@ -3,6 +3,7 @@
 namespace Hostville\Dorcas\LaravelCompat;
 
 
+use Hostville\Dorcas\LaravelCompat\Auth\DorcasUser;
 use Hostville\Dorcas\LaravelCompat\Auth\DorcasUserProvider;
 use Hostville\Dorcas\Sdk;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,12 @@ class DorcasServiceProvider extends ServiceProvider
             });
         }
         // add the Dorcas API user provider
+        $this->app->when(DorcasUser::class)
+                    ->needs(Sdk::class)
+                    ->give(function () {
+                        return $this->app->make(Sdk::class);
+                    });
+        # provide the requirement
         Auth::provider('dorcas', function ($app, array $config) {
             return new DorcasUserProvider($app->make(Sdk::class), $config);
         });

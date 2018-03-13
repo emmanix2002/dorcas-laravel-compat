@@ -23,10 +23,23 @@ class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable
      * @param array    $attributes
      * @param Sdk|null $sdk
      */
-    public function __construct(array $attributes, Sdk $sdk = null)
+    public function __construct(array $attributes = [], Sdk $sdk = null)
     {
         parent::__construct($attributes);
         $this->sdk = $sdk ?: Container::getInstance()->make(Sdk::class);
+    }
+
+    /**
+     * Sets the attributes on the resource.
+     *
+     * @param array $attributes
+     *
+     * @return $this
+     */
+    public function setAttributes(array $attributes)
+    {
+        $this->attributes = $attributes;
+        return $this;
     }
 
     /**
