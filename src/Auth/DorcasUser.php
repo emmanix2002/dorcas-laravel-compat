@@ -5,6 +5,7 @@ namespace Hostville\Dorcas\LaravelCompat\Auth;
 
 use Hostville\Dorcas\Sdk;
 use Illuminate\Auth\GenericUser;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Notifications\Notifiable;
@@ -25,7 +26,7 @@ class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable
     public function __construct(array $attributes, Sdk $sdk = null)
     {
         parent::__construct($attributes);
-        $this->sdk = $sdk ?: app(Sdk::class);
+        $this->sdk = $sdk ?: Container::getInstance()->make(Sdk::class);
     }
 
     /**
