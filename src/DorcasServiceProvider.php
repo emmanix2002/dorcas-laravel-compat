@@ -40,7 +40,7 @@ class DorcasServiceProvider extends ServiceProvider
                         'token' => $token
                     ]
                 ];
-                return Sdk($config);
+                return new Sdk($config);
             });
         }
         // add the Dorcas API user provider
