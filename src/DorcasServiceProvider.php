@@ -30,15 +30,17 @@ class DorcasServiceProvider extends ServiceProvider
             $this->app->singleton(Sdk::class, function ($app) {
                 $token = Cache::get('dorcas.auth_token', null);
                 # get the token from the cache, if available
+                $config = $app->make('config');
+                # get the configuration object
                 $config = [
-                    'environment' => $app->make('config')->get('dorcas-api.env'),
+                    'environment' => $config->get('dorcas-api.env'),
                     'credentials' => [
-                        'id' => $app->make('config')->get('dorcas-api.client.id'),
-                        'secret' => $app->make('config')->get('dorcas-api.client.secret'),
+                        'id' => $config->get('dorcas-api.client.id'),
+                        'secret' => $config->get('dorcas-api.client.secret'),
                         'token' => $token
                     ]
                 ];
-                return new Sdk($config);
+                return Sdk($config);
             });
         }
         // add the Dorcas API user provider
