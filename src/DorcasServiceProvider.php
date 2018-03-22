@@ -26,14 +26,11 @@ class DorcasServiceProvider extends ServiceProvider
         if (!$this->app->has(Sdk::class)) {
             $request = $this->app()->make('request');
             $user = $request->user();
-            $tokenStoreId = null;
-            if (!empy($user)) {
-                $tokenStoreId = $user->email;
-            }
+            $tokenStoreId = !empty($user) ? $user->email : null;
             /**
              * Dorcas SDK
              */
-            $this->app->singleton(Sdk::class, function ($app, $tokenStoreId) {
+            $this->app->singleton(Sdk::class, function ($app) use ($tokenStoreId) {
                 $token = !empty($tokenStoreId) ? Cache::get('dorcas.auth_token.'.$tokenStoreId, null) : null;
                 # get the token from the cache, if available
                 $config = $app->make('config');
