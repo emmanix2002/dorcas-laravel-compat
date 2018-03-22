@@ -106,7 +106,7 @@ class DorcasUserProvider implements UserProvider
         if ($token instanceof DorcasResponse) {
             return null;
         }
-        Cache::put('dorcas.auth_token', $token, 120);
+        Cache::put('dorcas.auth_token.'.$credentials['email'], $token, 120);
         $this->sdk->setAuthorizationToken($token);
         # set the authorization token
         $service = $this->sdk->createProfileService();
