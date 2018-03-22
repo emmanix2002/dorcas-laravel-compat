@@ -49,6 +49,10 @@ class DorcasUserProvider implements UserProvider
      */
     public function retrieveById($identifier)
     {
+        $apiAuthToken = Cache::get('dorcas.auth_token.'.$identifier, null);
+        if (!empty($apiAuthToken)) {
+            $this->sdk->setAuthorizationToken($apiAuthToken);
+        }
         $resource = $this->sdk->createUserResource($identifier);
         $response = $resource->relationships('company')->send('get');
         if (!$response->isSuccessful()) {
@@ -67,6 +71,10 @@ class DorcasUserProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
+        $apiAuthToken = Cache::get('dorcas.auth_token.'.$identifier, null);
+        if (!empty($apiAuthToken)) {
+            $this->sdk->setAuthorizationToken($apiAuthToken);
+        }
         $resource = $this->sdk->createUserResource($identifier);
         $response = $resource->relationships('company')
                                 ->addQueryArgument('column', 'remember_token')
@@ -88,6 +96,10 @@ class DorcasUserProvider implements UserProvider
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
+        $apiAuthToken = Cache::get('dorcas.auth_token.'.$user->getAuthIdentifier(), null);
+        if (!empty($apiAuthToken)) {
+            $this->sdk->setAuthorizationToken($apiAuthToken);
+        }
         $resource = $this->sdk->createUserResource($user->getAuthIdentifier());
         $resource->addBodyParam('token', $token)->send('put');
     }
@@ -106,7 +118,6 @@ class DorcasUserProvider implements UserProvider
         if ($token instanceof DorcasResponse) {
             return null;
         }
-        Cache::put('dorcas.auth_token.'.$credentials['email'], $token, 120);
         $this->sdk->setAuthorizationToken($token);
         # set the authorization token
         $service = $this->sdk->createProfileService();
@@ -114,7 +125,11 @@ class DorcasUserProvider implements UserProvider
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new DorcasUser($response->getData(), $this->sdk);
+        $user = $response->getData();
+        # get the actual user data
+        Cache::put('dorcas.auth_token.'.$user['id'], $token, 120);
+        # save the auth token to the cache
+        return new DorcasUser($user, $this->sdk);
     }
 
     /**

@@ -26,7 +26,7 @@ class DorcasServiceProvider extends ServiceProvider
         if (!$this->app->has(Sdk::class)) {
             $request = $this->app->make('request');
             $user = $request->user();
-            $tokenStoreId = !empty($user) ? $user->email : null;
+            $tokenStoreId = !empty($user) ? $user->id : null;
             /**
              * Dorcas SDK
              */
