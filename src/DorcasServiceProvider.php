@@ -24,7 +24,7 @@ class DorcasServiceProvider extends ServiceProvider
 
         // check if the Sdk has already been added to the container
         if (!$this->app->has(Sdk::class)) {
-            $request = $this->app()->make('request');
+            $request = $this->app->make('request');
             $user = $request->user();
             $tokenStoreId = !empty($user) ? $user->email : null;
             /**
