@@ -76,6 +76,14 @@ class DorcasUser extends GenericUser implements Arrayable, \JsonSerializable
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getRememberTokenName()
+    {
+        return 'token';
+    }
+
+    /**
      * @return string
      */
     public function routeNotificationForSms()
