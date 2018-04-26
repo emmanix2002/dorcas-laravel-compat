@@ -8,6 +8,7 @@ use Hostville\Dorcas\LaravelCompat\Auth\DorcasUserProvider;
 use Hostville\Dorcas\Sdk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\ServiceProvider;
 
 class DorcasServiceProvider extends ServiceProvider
@@ -24,9 +25,7 @@ class DorcasServiceProvider extends ServiceProvider
 
         // check if the Sdk has already been added to the container
         if (!$this->app->has(Sdk::class)) {
-            $request = $this->app->make('request');
-            $user = $request->user();
-            $tokenStoreId = !empty($user) ? $user->id : null;
+            $tokenStoreId = Cookie::get('store_id');
             /**
              * Dorcas SDK
              */

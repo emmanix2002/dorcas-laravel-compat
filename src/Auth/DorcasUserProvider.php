@@ -8,6 +8,7 @@ use Hostville\Dorcas\Sdk;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 
 class DorcasUserProvider implements UserProvider
@@ -127,6 +128,8 @@ class DorcasUserProvider implements UserProvider
         }
         $user = $response->getData();
         # get the actual user data
+        Cookie::queue('store_id', $user['id']);
+        # set the user id cookie
         Cache::put('dorcas.auth_token.'.$user['id'], $token, 120);
         # save the auth token to the cache
         return new DorcasUser($user, $this->sdk);
