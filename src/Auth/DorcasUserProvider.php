@@ -104,13 +104,14 @@ class DorcasUserProvider implements UserProvider
         $resource = $this->sdk->createUserResource($user->getAuthIdentifier());
         $resource->addBodyParam('token', $token)->send('put');
     }
-
+    
     /**
      * Retrieve a user by the given credentials.
      *
      * @param  array $credentials
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function retrieveByCredentials(array $credentials)
     {
@@ -133,6 +134,38 @@ class DorcasUserProvider implements UserProvider
         Cache::put('dorcas.auth_token.'.$user['id'], $token, 120);
         # save the auth token to the cache
         return new DorcasUser($user, $this->sdk);
+    }
+    
+    /**
+     * Retrieve a user by the given credentials.
+     *
+     * @param string $email
+     *
+     * @return DorcasUser|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function retrieveByEmailOnly(string $email)
+    {
+        $token = authorize_via_email_only($this->sdk, $email ?? '');
+        # we get the authentication token
+        if ($token instanceof DorcasResponse) {
+            return null;
+        }
+        $this->sdk->setAuthorizationToken($token);
+        # set the authorization token
+        $service = $this->sdk->createProfileService();
+        $response = $service->addQueryArgument('include', 'company')->send('get');
+        if (!$response->isSuccessful()) {
+            return null;
+        }
+        $user = $response->getData();
+        # get the actual user data
+        Cookie::queue('store_id', $user['id']);
+        # set the user id cookie
+        Cache::put('dorcas.auth_token.'.$user['id'], $token, 120);
+        # save the auth token to the cache
+        return new DorcasUser($user, $this->sdk);
+        
     }
 
     /**
