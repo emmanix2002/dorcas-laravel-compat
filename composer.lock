@@ -417,12 +417,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/emmanix2002/dorcas-sdk-php.git",
-                "reference": "45bbf21e8494cd8749ffbc2b9f43eccbeacd9ca7"
+                "reference": "d19e9c2d5b500bb1170ed29bb2453bc4f3c854e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/emmanix2002/dorcas-sdk-php/zipball/45bbf21e8494cd8749ffbc2b9f43eccbeacd9ca7",
-                "reference": "45bbf21e8494cd8749ffbc2b9f43eccbeacd9ca7",
+                "url": "https://api.github.com/repos/emmanix2002/dorcas-sdk-php/zipball/d19e9c2d5b500bb1170ed29bb2453bc4f3c854e3",
+                "reference": "d19e9c2d5b500bb1170ed29bb2453bc4f3c854e3",
                 "shasum": ""
             },
             "require": {
@@ -462,7 +462,7 @@
                 "invoicing",
                 "sdk"
             ],
-            "time": "2018-07-30T10:09:32+00:00"
+            "time": "2018-07-30T10:23:28+00:00"
         },
         {
             "name": "illuminate/auth",

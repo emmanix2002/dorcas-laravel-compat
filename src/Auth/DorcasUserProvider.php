@@ -139,14 +139,14 @@ class DorcasUserProvider implements UserProvider
     /**
      * Retrieve a user by the given credentials.
      *
-     * @param string $email
+     * @param array $credentials
      *
      * @return DorcasUser|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function retrieveByEmailOnly(string $email)
+    public function retrieveByEmailOnly(array $credentials)
     {
-        $token = authorize_via_email_only($this->sdk, $email ?? '');
+        $token = authorize_via_email_only($this->sdk, $credentials);
         # we get the authentication token
         if ($token instanceof DorcasResponse) {
             return null;
