@@ -78,6 +78,7 @@ class DorcasUserProvider implements UserProvider
         }
         $resource = $this->sdk->createUserResource($identifier);
         $response = $resource->relationships('company')
+                                ->addQueryArgument('select_using', 'email')
                                 ->addQueryArgument('column', 'remember_token')
                                 ->addQueryArgument('value', $token)
                                 ->send('get');
