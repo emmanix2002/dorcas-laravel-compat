@@ -129,9 +129,9 @@ class DorcasUserProvider implements UserProvider
         }
         $user = $response->getData();
         # get the actual user data
-        Cookie::queue('store_id', $user['id']);
+        Cookie::queue('store_id', $user['id'], 24 * 60);
         # set the user id cookie
-        Cache::put('dorcas.auth_token.'.$user['id'], $token, 120);
+        Cache::put('dorcas.auth_token.'.$user['id'], $token, 24 * 60);
         # save the auth token to the cache
         return new DorcasUser($user, $this->sdk);
     }
@@ -160,9 +160,9 @@ class DorcasUserProvider implements UserProvider
         }
         $user = $response->getData();
         # get the actual user data
-        Cookie::queue('store_id', $user['id']);
+        Cookie::queue('store_id', $user['id'], 24 * 60);
         # set the user id cookie
-        Cache::put('dorcas.auth_token.'.$user['id'], $token, 120);
+        Cache::put('dorcas.auth_token.'.$user['id'], $token, 24 * 60);
         # save the auth token to the cache
         return new DorcasUser($user, $this->sdk);
         
