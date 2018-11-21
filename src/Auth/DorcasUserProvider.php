@@ -59,7 +59,11 @@ class DorcasUserProvider implements UserProvider
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new DorcasUser($response->getData(), $this->sdk);
+        $data = $response->getData();
+        if (!empty($response->meta)) {
+            $data = array_merge($data, ['meta' => $response->meta]);
+        }
+        return new DorcasUser($data, $this->sdk);
     }
 
     /**
@@ -85,7 +89,11 @@ class DorcasUserProvider implements UserProvider
         if (!$response->isSuccessful()) {
             return null;
         }
-        return new DorcasUser($response->getData(), $this->sdk);
+        $data = $response->getData();
+        if (!empty($response->meta)) {
+            $data = array_merge($data, ['meta' => $response->meta]);
+        }
+        return new DorcasUser($data, $this->sdk);
     }
 
     /**
@@ -134,6 +142,9 @@ class DorcasUserProvider implements UserProvider
         # set the user id cookie
         Cache::put('dorcas.auth_token.'.$user['id'], $token, 24 * 60);
         # save the auth token to the cache
+        if (!empty($response->meta)) {
+            $user = array_merge($user, ['meta' => $response->meta]);
+        }
         return new DorcasUser($user, $this->sdk);
     }
     
@@ -165,6 +176,9 @@ class DorcasUserProvider implements UserProvider
         # set the user id cookie
         Cache::put('dorcas.auth_token.'.$user['id'], $token, 24 * 60);
         # save the auth token to the cache
+        if (!empty($response->meta)) {
+            $user = array_merge($user, ['meta' => $response->meta]);
+        }
         return new DorcasUser($user, $this->sdk);
         
     }
