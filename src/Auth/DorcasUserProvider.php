@@ -50,10 +50,10 @@ class DorcasUserProvider implements UserProvider
      */
     public function retrieveById($identifier)
     {
-        $apiAuthToken = Cache::get('dorcas.auth_token.'.$identifier, null);
+        /*$apiAuthToken = Cache::get('dorcas.auth_token.'.$identifier, null);
         if (!empty($apiAuthToken)) {
             $this->sdk->setAuthorizationToken($apiAuthToken);
-        }
+        }*/
         $resource = $this->sdk->createUserResource($identifier);
         $response = $resource->relationships('company')->send('get');
         if (!$response->isSuccessful()) {
@@ -76,10 +76,10 @@ class DorcasUserProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        $apiAuthToken = Cache::get('dorcas.auth_token.'.$identifier, null);
+        /*$apiAuthToken = Cache::get('dorcas.auth_token.'.$identifier, null);
         if (!empty($apiAuthToken)) {
             $this->sdk->setAuthorizationToken($apiAuthToken);
-        }
+        }*/
         $resource = $this->sdk->createUserResource($identifier);
         $response = $resource->relationships('company')
                                 ->addQueryArgument('select_using', 'email')
@@ -106,10 +106,10 @@ class DorcasUserProvider implements UserProvider
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
-        $apiAuthToken = Cache::get('dorcas.auth_token.'.$user->getAuthIdentifier(), null);
+        /*$apiAuthToken = Cache::get('dorcas.auth_token.'.$user->getAuthIdentifier(), null);
         if (!empty($apiAuthToken)) {
             $this->sdk->setAuthorizationToken($apiAuthToken);
-        }
+        }*/
         $resource = $this->sdk->createUserResource($user->getAuthIdentifier());
         $resource->addBodyParam('token', $token)->send('put');
     }
